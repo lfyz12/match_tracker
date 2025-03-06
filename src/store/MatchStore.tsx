@@ -4,7 +4,7 @@ import MatchApi from "../api/MatchApi";
 
 export class MatchStore {
     matches = [] as IMatch[]
-
+    error: boolean = false
     constructor() {
         makeAutoObservable(this)
     }
@@ -15,12 +15,15 @@ export class MatchStore {
 
     async getMatches() {
         try {
-            const {data} = await MatchApi.getMatches()
-            this.setMatches(data.data.matches)
-            console.log(this.matches)
-            return data.data.matches
+            const {data} = await MatchApi.getMatches();
+            this.setMatches(data.data.matches);
+            this.error = false
+            return data.data.matches;
         } catch (e) {
-            throw new Error("Not implemented");
+            console.error("Ошибка при получении матчей:", e);
+            this.error = true
+            return null;
         }
     }
+
 }

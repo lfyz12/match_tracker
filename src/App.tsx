@@ -1,18 +1,18 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import './App.css';
-import {Context} from "./index";
+import MatchCardList from "./components/MatchCardList";
+import Header from "./components/Header";
+import {observer} from "mobx-react-lite";
 
 function App() {
-    const {matchStore} = useContext(Context)
-    const getMatches = async () => {
-        await matchStore.getMatches()
-    }
+
 
   return (
-    <div className="App">
-      <button onClick={getMatches} className='w-56 h-20 border border-blue-950 rounded-md mt-5 ms-5'>Get</button>
+    <div className="App px-8 pt-10 bg-[#06080C] w-screen h-screen">
+        <Header/>
+        <MatchCardList/>
     </div>
   );
 }
 
-export default App;
+export default observer(App);

@@ -7,11 +7,6 @@ export interface IMatch {
     awayTeam: ITeam
     homeScore: number
     awayScore: number
-    status: StatusState
+    status: string
 }
 
-export const enum StatusState {
-    'Scheduled',
-    'Ongoing',
-    'Finished'
-}
