@@ -1,10 +1,11 @@
 import {IMatch} from "../models/IMatch";
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 import MatchApi from "../api/MatchApi";
 
 export class MatchStore {
     matches = [] as IMatch[]
     error: boolean = false
+    loading: boolean = false
     constructor() {
         makeAutoObservable(this)
     }
@@ -14,15 +15,17 @@ export class MatchStore {
     }
 
     async getMatches() {
+        this.loading = true;
+        this.error = false;
+
         try {
-            const {data} = await MatchApi.getMatches();
+            const { data } = await MatchApi.getMatches();
             this.setMatches(data.data.matches);
-            this.error = false
-            return data.data.matches;
         } catch (e) {
-            console.error("Ошибка при получении матчей:", e);
-            this.error = true
-            return null;
+            console.error("Ошибка: не удалось загрузить информацию", e);
+            this.error = true;
+        } finally {
+            this.loading = false;
         }
     }
 
